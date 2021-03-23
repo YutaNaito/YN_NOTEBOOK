@@ -48,7 +48,7 @@
     - `make html`
 
     上記のコマンドはWindows標準搭載のコマンドプロンプトで使用できるコマンドであり、Git BashなどのUNIX系コマンドラインでは以下のコマンド
-      - `sphinx-build -d build/doctrees source build/html`
+      - `sphinx-build -d docs/.doctrees source docs`
       - `./make.bat html`
 
 #### 参考資料
