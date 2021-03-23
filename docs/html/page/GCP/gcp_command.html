@@ -1,0 +1,252 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>GCPコマンド &mdash; YN_NOTEBOOK . ドキュメント</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> YN_NOTEBOOK
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Agile/agile_index.html">1. Agile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Vim/vim_index.html">2. Vim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UNIX/unix_index.html">3. UNIX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Linux/linux_index.html">4. Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Sphinx/sphinx_index.html">5. Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Docker/docker_index.html">6. Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Kubernetes/kubernetes_index.html">7. Kubernetes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROS/ros_index.html">8. ROS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AWS/aws_index.html">9. AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcp_index.html">10. GCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Hands_on/hands_on_index.html">11. Hands-on</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YN_NOTEBOOK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>GCPコマンド</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/page/GCP/gcp_command.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="gcp">
+<h1>GCPコマンド<a class="headerlink" href="#gcp" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<ol class="simple">
+<li><p>Storageへのbucketの作成
+<code class="docutils literal notranslate"><span class="pre">&lt;BUCKET_NAME&gt;</span></code>はグローバルでユニークであること</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gsutil</span> <span class="pre">mb</span> <span class="pre">gs://&lt;BUCKET_NAME&gt;</span></code></p></li>
+</ul>
+</li>
+<li><p>ローカルファイルをStorageのbucketにコピー</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gsutil</span> <span class="pre">cp</span> <span class="pre">[MY_FILE]</span> <span class="pre">gs://[BUCKET_NAME]</span></code></p></li>
+</ul>
+</li>
+<li><p>現在使用可能なリージョンの表示</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gcloud</span> <span class="pre">compute</span> <span class="pre">regions</span> <span class="pre">list</span></code></p></li>
+</ul>
+</li>
+<li><p>自分のリージョンを環境変数にセット</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">INFRACLASS_REGION=[YOUR_REGION]</span></code></p></li>
+</ul>
+</li>
+<li><p>プロジェクトのIDを設定</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">INFRACLASS_PROJECT_ID=[YOUR_PROJECT_ID]</span></code></p></li>
+</ul>
+</li>
+<li><p>環境変数の設定
+環境変数用のファイルを作成して追加していく</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mkdir</span> <span class="pre">infraclass</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">touch</span> <span class="pre">infraclass/config</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">INFRACLASS_REGION=$INFRACLASS_REGION</span> <span class="pre">&gt;&gt;</span> <span class="pre">~/infraclass/config</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">~/infraclass/config</span></code>
+設定を永続的にしたい場合は<code class="docutils literal notranslate"><span class="pre">~</span></code>直下に<code class="docutils literal notranslate"><span class="pre">.profile</span></code>を作成し,最後の行に<code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">~\infraclass/config</span></code>を追加する</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nano</span> <span class="pre">.profile</span></code></p></li>
+</ul>
+</li>
+</ol>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 著作権 2020, Yuta Naito
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

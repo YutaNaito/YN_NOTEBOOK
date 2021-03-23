@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Sphinxの導入 &mdash; YN_NOTEBOOK . ドキュメント</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> YN_NOTEBOOK
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Agile/agile_index.html">1. Agile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Vim/vim_index.html">2. Vim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UNIX/unix_index.html">3. UNIX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Linux/linux_index.html">4. Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sphinx_index.html">5. Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Docker/docker_index.html">6. Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Kubernetes/kubernetes_index.html">7. Kubernetes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROS/ros_index.html">8. ROS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AWS/aws_index.html">9. AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GCP/gcp_index.html">10. GCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Hands_on/hands_on_index.html">11. Hands-on</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YN_NOTEBOOK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Sphinxの導入</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/page/Sphinx/sphinx_introduction.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sphinx">
+<h1>Sphinxの導入<a class="headerlink" href="#sphinx" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<ol>
+<li><p>sphinxのインストール</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">sphinx</span></code></p></li>
+</ul>
+</li>
+<li><p>ディレクトリ作成</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">kdir</span> <span class="pre">&lt;PROJECT_DIRECTORY&gt;</span> <span class="pre">&amp;&amp;</span> <span class="pre">cd</span> <span class="pre">&lt;PROJETCT_DIRECTORY&gt;</span></code></p></li>
+</ul>
+</li>
+<li><p>作成したディレクトリでプロジェクト作成</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sphinx-quickstart
+Welcome to the Sphinx 3.1.2 quickstart utility.
+
+Please enter values for the following settings (just press Enter to
+accept a default value, if one is given in brackets).
+
+Selected root path: .
+
+You have two options for placing the build directory for Sphinx output.
+Either, you use a directory &quot;_build&quot; within the root path, or you separate
+&quot;source&quot; and &quot;build&quot; directories within the root path.
+&gt; Separate source and build directories (y/n) [n]: y
+
+The project name will occur in several places in the built documentation.
+&gt; Project name: プロジェクト名
+&gt; Author name(s): 筆者名
+&gt; Project release []: リリースバージョン
+
+If the documents are to be written in a language other than English,
+you can select a language here by its language code. Sphinx will then
+translate text that it generates into that language.
+
+For a list of supported codes, see
+https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-language.
+&gt; Project language [en]: ja
+
+Creating file C:\Workspace\Python\sample-sphinx\source\conf.py.
+Creating file C:\Workspace\Python\sample-sphinx\source\index.rst.
+Creating file C:\Workspace\Python\sample-sphinx\Makefile.
+Creating file C:\Workspace\Python\sample-sphinx\make.bat.
+
+Finished: An initial directory structure has been created.
+
+You should now populate your master file C:\Workspace\Python\sample-sphinx\source\index.rst and create other documentation
+source files. Use the Makefile to build the docs, like so:
+    make builder
+    where &quot;builder&quot; is one of the supported builders, e.g. html, latex or linkcheck.
+</pre></div>
+</div>
+</li>
+<li><p>HTMLの作成</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">html</span></code></p></li>
+</ul>
+<p>上記のコマンドはWindows標準搭載のコマンドプロンプトで使用できるコマンドであり、Git BashなどのUNIX系コマンドラインでは以下のコマンド</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sphinx-build</span> <span class="pre">-d</span> <span class="pre">build/doctrees</span> <span class="pre">source</span> <span class="pre">build/html</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">./make.bat</span> <span class="pre">html</span></code></p></li>
+</ul>
+</li>
+</ol>
+<div class="section" id="id1">
+<h2>参考資料<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/ja/1.4/install.html">sphinxのインストール</a></p></li>
+<li><p><a class="reference external" href="https://qiita.com/kinpira/items/505bccacb2fba89c0ff0">sphinxでドキュメント作成からWeb公開までをやってみた</a></p></li>
+<li><p><a class="reference external" href="https://planset-study-sphinx.readthedocs.io/ja/latest/04.html">4.Sphinxでの文章の書き方(reStructuredText)</a></p></li>
+<li><p><a class="reference external" href="https://gotohayato.com/content/464/">ふだんMarkdownを書く技術者のためのreStructuredText文法まとめ</a></p></li>
+<li><p><a class="reference external" href="https://qiita.com/tatsurou313/items/8bf7b43842b7827760fa">Sphinxによるドキュメント作成と国際化の事始め</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 著作権 2020, Yuta Naito
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

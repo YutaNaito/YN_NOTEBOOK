@@ -1,0 +1,468 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ja" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Dockerを使ってEC2にGitlabを立ててみた &mdash; YN_NOTEBOOK . ドキュメント</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="検索" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> YN_NOTEBOOK
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Agile/agile_index.html">1. Agile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Vim/vim_index.html">2. Vim</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../UNIX/unix_index.html">3. UNIX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Linux/linux_index.html">4. Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Sphinx/sphinx_index.html">5. Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Docker/docker_index.html">6. Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Kubernetes/kubernetes_index.html">7. Kubernetes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ROS/ros_index.html">8. ROS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AWS/aws_index.html">9. AWS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GCP/gcp_index.html">10. GCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hands_on_index.html">11. Hands-on</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YN_NOTEBOOK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Dockerを使ってEC2にGitlabを立ててみた</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/page/Hands_on/gitlab_on_ec2_with_docker.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dockerec2gitlab">
+<h1>Dockerを使ってEC2にGitlabを立ててみた<a class="headerlink" href="#dockerec2gitlab" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>Gitlab CI/CDのハンズオンを試すために、AWSのEC2とDockerを使ってGitlabをインスタンス上に立ててみた。</p>
+<div class="section" id="id1">
+<h2>ネットワークの設定<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>今回はGitlab CI/CDを試すために一時的に環境を構築するだけなので、VPCにパブリックサブネットを作成し、Gitlab用のインスタンスを立てる。パブリックサブネットのルートテーブルにはインターネットゲートウェイを関連付ける。また、アクセスするのは自分だけなので、EC2インスタンスのセキュリティグループのインバウンドに自宅のグローバルIPをHTTP、HTTPS、SSHで設定する。</p>
+</div>
+<div class="section" id="ec2">
+<h2>使用するEC2インスタンス<a class="headerlink" href="#ec2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>下記のインスタンスを立てる</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="left">AMI</th>
+<th align="left">Instance Type</th>
+<th align="left">Storage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Amazon Linux 2 AMI(HVM), SSD Volume Type</td>
+<td align="left">t2.medium</td>
+<td align="left">volume type: gp2<br>size: 2GB</td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="id2">
+<h2>パッケージのインストール<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Gitlab CI/CDにはGitlabとGitlab Runnerが必要になる。一時的にハンズオン環境を構築できれば問題ないため、一つのEC2インスタンス上でDocker Composeを使ってGitlabとGitlab Runnerのコンテナを立てる。そのために、EC2にsshでログインして以下の操作を行う</p>
+<ul class="simple">
+<li><p>パッケージをアップデートしておく</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">yum</span> <span class="pre">update</span></code></p></li>
+</ul>
+</li>
+<li><p>コンテナの構築に使用するDocker Composeをインストールする</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">curl</span> <span class="pre">-L</span> <span class="pre">&quot;https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname</span> <span class="pre">-s)-$(uname</span> <span class="pre">-m)&quot;</span> <span class="pre">-o</span> <span class="pre">/usr/local/bin/docker-compose</span></code></p></li>
+</ul>
+</li>
+<li><p>実行権限を付加する</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">chmod</span> <span class="pre">+x</span> <span class="pre">/usr/local/bin/docker-compose</span></code></p></li>
+</ul>
+</li>
+</ul>
+<p>以下のバージョンが表示されれば環境は準備完了</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[ec2-user@ip-10-0-1-68 ~]$ docker-compose version
+docker-compose version 1.26.2, build eefe0d31
+docker-py version: 4.2.2
+CPython version: 3.7.7
+OpenSSL version: OpenSSL 1.1.0l  10 Sep 2019
+</pre></div>
+</div>
+</div>
+<div class="section" id="docker">
+<h2>Dockerのネットワークを作成<a class="headerlink" href="#docker" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>GitlabとGitlab Runnerが通信するために2つを同じネットワーク上に配置する。そのためにDockerのネットワークを作成する。</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">network</span> <span class="pre">create</span> <span class="pre">gitlab_network</span></code></p>
+<p>以下のコマンドで作成したネットワークが表示されるか確認する</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[ec2-user@ip-10-0-1-68 ~]$ docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+a9471a766fe4        bridge              bridge              local
+359795348d03        ec2-user_default    bridge              local
+5efaa18b3451        gitlab_network      bridge              local
+e520aa853304        host                host                local
+4ecad3044b34        none                null                local
+</pre></div>
+</div>
+</div>
+<div class="section" id="docker-compose-yaml">
+<h2>docker-compose.yamlの編集<a class="headerlink" href="#docker-compose-yaml" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>EC2インスタンスのログイン直後のディレクトリでdocker-compose.yamlを作成し、以下のように編集する</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[ec2-user@ip-10-0-1-68 ~]$ vi docker-compose.yaml
+version: &#39;3.7&#39;
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    restart: always
+    hostname: sugar.salt.com
+    environment:
+     GITLAB_HOST: 54.XX.XX.XX
+     GITLAB_PORT: 80
+     GITLAB_SSH_PORT: 22
+     GITLAB_ROOT_PASSWORD: sugar_salt
+    ports:
+     - &#39;8000:80&#39;
+     - &#39;443:443&#39;
+     - &#39;2022:22&#39;
+    volumes:
+     - &#39;/srv/gitlab/config:/etc/gitlab&#39;
+     - &#39;/srv/gitlab/logs:/var/log/gitlab&#39;
+     - &#39;/srv/gitlab/data:/var/opt/gitlab&#39;
+    networks:
+     - gitlab_network
+  gitLab-runner:
+    image: gitlab/gitlab-runner:latest
+    volumes:
+     - &#39;/srv/gitlab-runner/config:/etc/gitlab-runner&#39;
+     - &#39;/var/run/docker.sock:/var/run/docker.sock&#39;
+    networks:
+     - gitlab_network
+    depends_on:
+     - gitlab
+networks:
+ gitlab_network:
+  external: true
+</pre></div>
+</div>
+</div>
+<div class="section" id="docker-compose">
+<h2>docker-composeで各コンテナを起動する<a class="headerlink" href="#docker-compose" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Docker Composeで各コンテナを起動する</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">-f</span> <span class="pre">./docker-compose.yaml</span> <span class="pre">up</span> <span class="pre">-d</span></code></p>
+<p>以下のコマンドで各コンテナに同一ネットワークのホストが割り当てられているか確認する。GitlabのコンテナのIPv4Addressは後に使用するのでメモしておく</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[ec2-user@ip-10-0-1-68 ~]$ docker network inspect gitlab_network
+[
+    {
+        &quot;Name&quot;: &quot;gitlab_network&quot;,
+        &quot;Id&quot;: &quot;5efaa18b3451ee6264f48f70343bc0b60de107f55d9f8b4a5837ade79a181a36&quot;,
+        &quot;Created&quot;: &quot;2020-09-09T16:58:16.997862422Z&quot;,
+        &quot;Scope&quot;: &quot;local&quot;,
+        &quot;Driver&quot;: &quot;bridge&quot;,
+        &quot;EnableIPv6&quot;: false,
+        &quot;IPAM&quot;: {
+            &quot;Driver&quot;: &quot;default&quot;,
+            &quot;Options&quot;: {},
+            &quot;Config&quot;: [
+                {
+                    &quot;Subnet&quot;: &quot;172.19.0.0/16&quot;,
+                    &quot;Gateway&quot;: &quot;172.19.0.1&quot;
+                }
+            ]
+        },
+        &quot;Internal&quot;: false,
+        &quot;Attachable&quot;: false,
+        &quot;Ingress&quot;: false,
+        &quot;ConfigFrom&quot;: {
+            &quot;Network&quot;: &quot;&quot;
+        },
+        &quot;ConfigOnly&quot;: false,
+        &quot;Containers&quot;: {
+            &quot;8291b0970d88feca3850cb24c748c88a4f9f14b5b4e5b6d35202752f5d41c13c&quot;: {
+                &quot;Name&quot;: &quot;ec2-user_gitLab-runner_1&quot;,
+                &quot;EndpointID&quot;: &quot;94285eeeb5363bcf9d099fb822f1d22084c45479fbb9f34a5fba9288a0877629&quot;,
+                &quot;MacAddress&quot;: &quot;02:42:ac:13:00:03&quot;,
+                &quot;IPv4Address&quot;: &quot;172.19.0.3/16&quot;,
+                &quot;IPv6Address&quot;: &quot;&quot;
+            },
+            &quot;9cf2f57fbc36a9d5ffabaac1fa1b00320e056d8e4b474c52ef83a6276e032c14&quot;: {
+                &quot;Name&quot;: &quot;ec2-user_gitlab_1&quot;,
+                &quot;EndpointID&quot;: &quot;a35081e26c2dc24a2ea837f3e11c9775b9ca56c589547d0328644d3555351443&quot;,
+                &quot;MacAddress&quot;: &quot;02:42:ac:13:00:02&quot;,
+                &quot;IPv4Address&quot;: &quot;172.19.0.2/16&quot;,
+                &quot;IPv6Address&quot;: &quot;&quot;
+            }
+        },
+        &quot;Options&quot;: {},
+        &quot;Labels&quot;: {}
+    }
+]
+</pre></div>
+</div>
+</div>
+<div class="section" id="gitlabregister-token">
+<h2>Gitlabにログインしてregister tokenを確認する<a class="headerlink" href="#gitlabregister-token" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Gitlabにログインして適当にプロジェクトを作成したら、sidebarの<code class="docutils literal notranslate"><span class="pre">Settings</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">CI/CD</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Runner</span></code>から<code class="docutils literal notranslate"><span class="pre">register</span> <span class="pre">token</span></code>を確認しメモしておく。<code class="docutils literal notranslate"><span class="pre">register</span> <span class="pre">token</span></code>はGitlabにGitlab Runnerを登録する際の<code class="docutils literal notranslate"><span class="pre">gitlab-ci</span> <span class="pre">token</span></code>として使用する</p>
+<p><img alt="Gitlab" src="../../_images/register_token_for_gitlab_ci.PNG" /></p>
+</div>
+<div class="section" id="gitlabgitlab-runner">
+<h2>GitlabにGitlab Runnerを登録する<a class="headerlink" href="#gitlabgitlab-runner" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>以下のコマンドでGitlab RunnerのコンテナIDを確認する</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[ec2-user@ip-10-0-1-68 ~]$ docker ps
+CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS                    PORTS                                                              NAMES
+8291b0970d88        gitlab/gitlab-runner:latest   &quot;/usr/bin/dumb-init …&quot;   13 days ago         Up 21 minutes                                                                                ec2-user_gitLab-runner_1
+9cf2f57fbc36        gitlab/gitlab-ce:latest       &quot;/assets/wrapper&quot;        13 days ago         Up 22 minutes (healthy)   0.0.0.0:443-&gt;443/tcp, 0.0.0.0:2022-&gt;22/tcp, 0.0.0.0:8000-&gt;80/tcp   ec2-user_gitlab_1
+</pre></div>
+</div>
+<p>確認したコンテナIDでGitlab Runnerのコンテナに入る</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-i</span> <span class="pre">-t</span> <span class="pre">8291b0970d88</span> <span class="pre">bash</span></code></p>
+<p>コンテナ内でviを使用できるようにパッケージをインストールする。コンテナのイメージはUbuntu系なのでコマンドは以下になる</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
+<span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">vim</span>
+</pre></div>
+</div>
+<p>Gitlab Runnerの<code class="docutils literal notranslate"><span class="pre">register</span></code>コマンドで設定を行う。URLには<code class="docutils literal notranslate"><span class="pre">http://gitLab/</span></code>を指定する。<code class="docutils literal notranslate"><span class="pre">gitlba-ci</span> <span class="pre">token</span></code>には先ほどメモしたトークンを入力する。不要な部分はEnterで進む</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="o">@</span><span class="mi">8291</span><span class="n">b0970d88</span><span class="p">:</span><span class="o">/</span><span class="c1"># gitlab-runer register</span>
+<span class="n">Running</span> <span class="ow">in</span> <span class="n">system</span><span class="o">-</span><span class="n">mode</span><span class="o">.</span>
+
+<span class="n">Please</span> <span class="n">enter</span> <span class="n">the</span> <span class="n">gitlab</span><span class="o">-</span><span class="n">ci</span> <span class="n">coordinator</span> <span class="n">URL</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">gitlab</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="p">):</span>
+<span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">gitLab</span><span class="o">/</span>
+<span class="n">Please</span> <span class="n">enter</span> <span class="n">the</span> <span class="n">gitlab</span><span class="o">-</span><span class="n">ci</span> <span class="n">token</span> <span class="k">for</span> <span class="n">this</span> <span class="n">runner</span><span class="p">:</span>
+<span class="n">gPntqNp5LNa6FMqLyf_D</span>
+<span class="n">Please</span> <span class="n">enter</span> <span class="n">the</span> <span class="n">gitlab</span><span class="o">-</span><span class="n">ci</span> <span class="n">description</span> <span class="k">for</span> <span class="n">this</span> <span class="n">runner</span><span class="p">:</span>
+<span class="p">[</span><span class="mi">64</span><span class="n">a46551905e8</span><span class="p">]:</span>
+<span class="n">Please</span> <span class="n">enter</span> <span class="n">the</span> <span class="n">gitlab</span><span class="o">-</span><span class="n">ci</span> <span class="n">tags</span> <span class="k">for</span> <span class="n">this</span> <span class="n">runner</span> <span class="p">(</span><span class="n">comma</span> <span class="n">separated</span><span class="p">):</span>
+<span class="n">Registering</span> <span class="n">runner</span><span class="o">...</span> <span class="n">succeeded</span>                     <span class="n">runner</span><span class="o">=</span><span class="n">LDz9ciJ5</span>
+<span class="n">Please</span> <span class="n">enter</span> <span class="n">the</span> <span class="n">executor</span><span class="p">:</span> <span class="n">parallels</span><span class="p">,</span> <span class="n">shell</span><span class="p">,</span> <span class="n">docker</span><span class="o">-</span><span class="n">ssh</span><span class="o">+</span><span class="n">machine</span><span class="p">,</span> <span class="n">kubernetes</span><span class="p">,</span> <span class="n">docker</span><span class="p">,</span> <span class="n">docker</span><span class="o">-</span><span class="n">ssh</span><span class="p">,</span> <span class="n">ssh</span><span class="p">,</span> <span class="n">virtualbox</span><span class="p">,</span> <span class="n">docker</span><span class="o">+</span><span class="n">machine</span><span class="p">:</span>
+<span class="n">docker</span>
+<span class="n">Please</span> <span class="n">enter</span> <span class="n">the</span> <span class="n">default</span> <span class="n">Docker</span> <span class="n">image</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span> <span class="n">ruby</span><span class="p">:</span><span class="mf">2.1</span><span class="p">):</span>
+<span class="n">centos</span><span class="p">:</span><span class="n">centos7</span>
+<span class="n">Runner</span> <span class="n">registered</span> <span class="n">successfully</span><span class="o">.</span> <span class="n">Feel</span> <span class="n">free</span> <span class="n">to</span> <span class="n">start</span> <span class="n">it</span><span class="p">,</span> <span class="n">but</span> <span class="k">if</span> <span class="n">it</span><span class="s1">&#39;s running already the config should be automatically reloaded!</span>
+</pre></div>
+</div>
+<p>上記の設定だけではまだGitlabとGitlab Runner間で通信ができないため、設定ファイルを編集する。docker-composeで各コンテナを起動した際にメモしたGitlabコンテナのDockerネットワークでのローカルIPを使用して<code class="docutils literal notranslate"><span class="pre">clone_url</span></code>を設定する。インターネットから見た時のEC2インスタンスは54.XX.XX.XXであり、Gitlabコンテナも<code class="docutils literal notranslate"><span class="pre">GITLAB_HOST</span></code>でこのグロバールIPに紐づいているが、Dockerネットワーク内のGitlab RunnerコンテナからみたGitlabコンテナのIPはdocker-composeで各コンテナを起動した際に確認したIPである。また、内部ポートは80を空けているためclone_urlは<code class="docutils literal notranslate"><span class="pre">http://172.19.0.2:80/</span></code>を設定する。network_modeは先ほど作成した<code class="docutils literal notranslate"><span class="pre">gitlab_network</span></code>を設定する</p>
+<p><code class="docutils literal notranslate"><span class="pre">vi</span> <span class="pre">etc/gitlab-runner/config.toml</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">session_server</span><span class="p">]</span>
+  <span class="n">session_timeout</span> <span class="o">=</span> <span class="mi">1800</span>
+
+<span class="p">[[</span><span class="n">runners</span><span class="p">]]</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;CI&quot;</span>
+  <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://gitLab/&quot;</span>
+  <span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;gPntqNp5LNa6FMqLyf_D&quot;</span>
+  <span class="n">executor</span> <span class="o">=</span> <span class="s2">&quot;docker&quot;</span>
+  <span class="n">clone_url</span> <span class="o">=</span> <span class="s2">&quot;http://172.19.0.2:80/&quot;</span>
+  <span class="p">[</span><span class="n">runners</span><span class="o">.</span><span class="n">custom_build_dir</span><span class="p">]</span>
+  <span class="p">[</span><span class="n">runners</span><span class="o">.</span><span class="n">cache</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">runners</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">s3</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">runners</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">gcs</span><span class="p">]</span>
+  <span class="p">[</span><span class="n">runners</span><span class="o">.</span><span class="n">docker</span><span class="p">]</span>
+    <span class="n">tls_verify</span> <span class="o">=</span> <span class="n">false</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="s2">&quot;centos:centos7&quot;</span>
+    <span class="n">privileged</span> <span class="o">=</span> <span class="n">false</span>
+    <span class="n">disable_entrypoint_overwrite</span> <span class="o">=</span> <span class="n">false</span>
+    <span class="n">oom_kill_disable</span> <span class="o">=</span> <span class="n">false</span>
+    <span class="n">disable_cache</span> <span class="o">=</span> <span class="n">false</span>
+    <span class="n">volumes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;/cache&quot;</span><span class="p">]</span>
+    <span class="n">shm_size</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">network_mode</span> <span class="o">=</span> <span class="s2">&quot;gitlab_network&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="gitlabrunner">
+<h2>GitlabでRunnerが使用可能か確認する<a class="headerlink" href="#gitlabrunner" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>sidebarの<code class="docutils literal notranslate"><span class="pre">Settings</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">CI/CD</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Runner</span></code>でGitlab Runnerが当されていることを確認する</p>
+<p><img alt="Gitlab" src="../../_images/registed_token_for_gitlab_ci.PNG" /></p>
+</div>
+<div class="section" id="id3">
+<h2>参考にしたページ<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://tsyama.hatenablog.com/entry/docker-local-gitlab-and-runner">docker-composeを使ってGitLab / Runner のローカル環境</a></p></li>
+<li><p><a class="reference external" href="https://qiita.com/sky_jokerxx/items/2a264a0194a5cbc7bd12">GitLabのgitlab-runnerを使えるようにするまでの備忘録</a></p></li>
+<li><p><a class="reference external" href="https://blog.techlab-xe.net/post-5953/">GitLab CI Runner の構築</a></p></li>
+<li><p><a class="reference external" href="https://dev.classmethod.jp/articles/gitlab-runner-ci-cd-1/">GitLab RunnerでCI/CDしてみる(前編)</a></p></li>
+<li><p><a class="reference external" href="https://qiita.com/kanedaq/items/5f762fd54c9795fd3a37">GitLab CIのRunnerで、手元のDockerイメージを使用してコンテナ内でテストを行う（git push後の自動実行 ＆ git push前にローカルで手動実行）</a></p></li>
+<li><p><a class="reference external" href="https://qiita.com/ynott/items/1ff698868ef85e50f5a1#onlykubernetesexceptkubernetes">GitLab CI/CDパイプライン設定リファレンス(日本語訳:GitLab CI/CD Pipeline Configuration Reference)</a></p></li>
+<li><p><a class="reference external" href="https://qiita.com/bremen/items/f47f383b9931a840a25c">GitLab CIでテスト・ビルド・デプロイを自動化する</a></p></li>
+<li><p><a class="reference external" href="https://qiita.com/YumaInaura/items/3432cc3f8a8553e05a6e">Docker — docker コンテナの中で vim が使えない場合</a></p></li>
+<li><p><a class="reference external" href="https://ccie-go.com/gitlab-cicd-install/">GitLabをコンテナで動かす手順(CI/CD有効化まで)</a></p></li>
+<li><p><a class="reference external" href="https://qiita.com/dhiki1234/items/9a673107eb9310d6aafa">docker-composeでコンテナ間通信</a></p></li>
+<li><p><a class="reference external" href="https://qiita.com/zembutsu/items/9e9d80e05e36e882caaa">Docker Compose - docker-compose.yml リファレンス</a></p></li>
+<li><p><a class="reference external" href="https://qiita.com/Kento75/items/cd943fe5e9af98f00539">GitLab最小構成セットアップ（AWSに応用可）</a></p></li>
+<li><p><a class="reference external" href="https://qiita.com/Y-Kanoh/items/d1d494dd9ac604689ac8">GitLabを試してみるメモ</a></p></li>
+<li><p><a class="reference external" href="https://sleepless-se.net/2019/09/15/multi-docker-compose-network-setting/">【Docker Compose】複数.yml(コンテナ間)ネットワーク設定方法</a></p></li>
+<li><p><a class="reference external" href="https://qiita.com/TsutomuNakamura/items/ed046ee21caca4a2ffd9">Docker network 概論</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 著作権 2020, Yuta Naito
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
