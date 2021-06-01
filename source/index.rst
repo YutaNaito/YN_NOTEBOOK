@@ -12,6 +12,7 @@ Welcome to YN_NOTEBOOK's documentation!
    :numbered:
 
    /page/Agile/agile_index
+   /page/C++/c++_index
    /page/Vim/vim_index
    /page/UNIX/unix_index
    /page/Linux/linux_index

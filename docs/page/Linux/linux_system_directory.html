@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>5. Sphinx &mdash; YN_NOTEBOOK . ドキュメント</title>
+  <title>Linuxのディレクトリ構造 &mdash; YN_NOTEBOOK . ドキュメント</title>
   
 
   
@@ -38,9 +38,7 @@
 
     
     <link rel="index" title="索引" href="../../genindex.html" />
-    <link rel="search" title="検索" href="../../search.html" />
-    <link rel="next" title="6. Docker" href="../Docker/docker_index.html" />
-    <link rel="prev" title="4. Linux" href="../Linux/linux_index.html" /> 
+    <link rel="search" title="検索" href="../../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,15 +84,12 @@
             
             
               <p class="caption"><span class="caption-text">Contents</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../Agile/agile_index.html">1. Agile</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Vim/vim_index.html">2. Vim</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../UNIX/unix_index.html">3. UNIX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Linux/linux_index.html">4. Linux</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Sphinx</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">5.1. Sphinx導入</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="linux_index.html">4. Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Sphinx/sphinx_index.html">5. Sphinx</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Docker/docker_index.html">6. Docker</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Kubernetes/kubernetes_index.html">7. Kubernetes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ROS/ros_index.html">8. ROS</a></li>
@@ -149,13 +144,13 @@
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li><span class="section-number">5. </span>Sphinx</li>
+      <li>Linuxのディレクトリ構造</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../../_sources/page/Sphinx/sphinx_index.md.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/page/Linux/linux_system_directory.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -168,22 +163,96 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="sphinx">
-<h1><span class="section-number">5. </span>Sphinx<a class="headerlink" href="#sphinx" title="このヘッドラインへのパーマリンク">¶</a></h1>
-<div class="section" id="id1">
-<h2><span class="section-number">5.1. </span><a class="reference internal" href="sphinx_introduction.html"><span class="doc">Sphinx導入</span></a><a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
-</div>
-</div>
+  <div class="section" id="linux">
+<h1>Linuxのディレクトリ構造<a class="headerlink" href="#linux" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th align="center">ディレクトリ</th>
+<th align="left">機能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>/bin</code></td>
+<td align="left">cd、cp、mv、bash、grep、sed、awk などの標準コマンド・スクリプトの実行プログラムがある</td>
+</tr>
+<tr>
+<td align="center"><code>/boot</code></td>
+<td align="left">grub などのシステムを起動するためのブートローダーがある。（※grub の編集は「/etc/default/grub」ファイルを編集し「update-grub2」コマンドを実行して「/boot」に反映する）</td>
+</tr>
+<tr>
+<td align="center"><code>/etc</code></td>
+<td align="left">プログラムの起動、終了や再起動などのコントロール機能やプログラム本体などが保存されている</td>
+</tr>
+<tr>
+<td align="center"><code>/home/username</code></td>
+<td align="left">ユーザーディレクトリー。ユーザーがデータを保存したり、作業を行ったりする場所は、ほとんどこのディレクトリの下で行う</td>
+</tr>
+<tr>
+<td align="center"><code>/lib</code></td>
+<td align="left">システムの共用ライブラリーが置かれている</td>
+</tr>
+<tr>
+<td align="center"><code>/lib32</code></td>
+<td align="left">32bit 版のライブラリーが置かれている</td>
+</tr>
+<tr>
+<td align="center"><code>/lib64</code></td>
+<td align="left">64bit 版のライブラリーが置かれている</td>
+</tr>
+<tr>
+<td align="center"><code>/opt</code></td>
+<td align="left">サイズの大きいソフトウェアなどはここにインストールする</td>
+</tr>
+<tr>
+<td align="center"><code>/proc/cpuinfo</code></td>
+<td align="left">CPU 型や仕様などの情報</td>
+</tr>
+<tr>
+<td align="center"><code>/proc/meminfo</code></td>
+<td align="left">メモリーの容量や仕様などの情報</td>
+</tr>
+<tr>
+<td align="center"><code>/root</code></td>
+<td align="left">rootユーザーのホームディレクトリ。</td>
+</tr>
+<tr>
+<td align="center"><code>/sbin</code></td>
+<td align="left">rootユーザーが利用するコマンドが置かれている</td>
+</tr>
+<tr>
+<td align="center"><code>/sys</code></td>
+<td align="left">デバイスやドライバーの設定ファイルなどが置かれている</td>
+</tr>
+<tr>
+<td align="center"><code>/srv</code></td>
+<td align="left">HTTP、FTP 用データが置かれている</td>
+</tr>
+<tr>
+<td align="center"><code>/tmp</code></td>
+<td align="left">一時ディレクトリ。システムを再起動すると自動的に削除される</td>
+</tr>
+<tr>
+<td align="center"><code>/usr/bin</code></td>
+<td align="left">Linux に標準搭載されているプログラムや apt-get などでインストールしたプログラムが置かれている</td>
+</tr>
+<tr>
+<td align="center"><code>/usr/sbin</code></td>
+<td align="left">管理者がインストールしたプログラムが置かれている</td>
+</tr>
+<tr>
+<td align="center"><code>/usr/local</code></td>
+<td align="left">システム管理者が個人的に利用するプログラムなど</td>
+</tr>
+</tbody>
+</table></div>
 
 
            </div>
            
           </div>
           <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../Docker/docker_index.html" class="btn btn-neutral float-right" title="6. Docker" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../Linux/linux_index.html" class="btn btn-neutral float-left" title="4. Linux" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
 
   <hr/>
 

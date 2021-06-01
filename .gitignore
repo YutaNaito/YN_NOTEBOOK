@@ -1,2 +1,5 @@
 docs/.doctrees
 log
+sphinx-eniv
+.vscode/
+.sphinx-env/
